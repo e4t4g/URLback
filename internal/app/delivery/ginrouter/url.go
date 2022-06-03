@@ -64,13 +64,7 @@ func (d delivery) Create() gin.HandlerFunc {
 		statURL := fmt.Sprintf("%s:%d/stat/%d", host, port, result.ID)
 
 		p := URLData{FullURL: statURL, ShortURL: shortURL}
-		templatePath := os.DirFS("./web/result/") // ../web/result/
-		t := template.Must(template.ParseFS(templatePath, "*.html")) // , "*/*.html"
-		err = t.Execute(c.Writer, p)
-		if err != nil {
-			panic(err)
-		}
-
+		c.JSON(http.StatusOK, p)
 	}
 }
 
@@ -83,7 +77,6 @@ func (d delivery) Redirect() gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"status": "incorrect token format"})
 		}
-
 		c.Redirect(http.StatusMovedPermanently, redirectStruct.FullURL)
 	}
 }
@@ -99,29 +92,13 @@ func (d delivery) GetStat() gin.HandlerFunc {
 		redirectStruct, err := d.url.GetStat(c.Request.Context(), id)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"status": "not found"})
+
 		}
 
 		p := URLData{Counter: redirectStruct.Counter}
-		templatePath := os.DirFS("./web/stat/") //"../web/stat/"
-		t := template.Must(template.ParseFS(templatePath, "*.html"))
-		err = t.Execute(c.Writer, p)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"status": "can not create stat web page"})
-		}
+		c.JSON(http.StatusOK, p.Counter)
 	}
 }
 
-func (d delivery) WebGenerate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		p := URLData{FullURL: "FullUrl", ShortURL: "ShortUrl"}
-		fmt.Println(p)
-		templatePath := os.DirFS("./web/create/") //../web/create/
-		t := template.Must(template.ParseFS(templatePath, "*.html"))
-		err := t.Execute(c.Writer, p)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"status": "can not create web page"})
-		}
-	}
-}
 
 

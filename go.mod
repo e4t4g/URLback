@@ -1,4 +1,4 @@
-module URLback
+module github.com/e4t4g/URLback
 
 go 1.14
 
