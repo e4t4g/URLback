@@ -1,0 +1,4 @@
+host: http://164.90.193.194
+port: 8080
+db_config:
+  db_url: cmd/URL.db
