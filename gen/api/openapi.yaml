@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  description: URL shortener REST API
+  title: UrlAPI
+  version: 1.0.0
+servers:
+- url: '{protocol}://{hostname}'
+  variables:
+    hostname:
+      default: localhost:8006
+      description: Hostname
+    protocol:
+      default: http
+      description: Protocol
+tags:
+- description: Operations with lines
+  name: Line
+paths:
+  /linkUrl/:
+    get:
+      operationId: Redirect
+      parameters:
+      - description: Short URL to return
+        explode: false
+        in: path
+        name: FullUrl
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid link
+      summary: Get new short url
+      tags:
+      - Line
+      x-accepts: application/json
+    post:
+      operationId: Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                full_url:
+                  example: https://www.amazon.com/
+                  type: string
+              required:
+              - full_url
+        description: New url needs to be added into the database
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: Created
+      summary: Add a new line into database
+      tags:
+      - Line
+      x-contentType: application/json
+      x-accepts: application/json
+  /linkUrl/[id]:
+    get:
+      operationId: GetStat
+      parameters:
+      - description: stat info
+        explode: false
+        in: path
+        name: UrlStat
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+          description: successful operation
+        "400":
+          content: {}
+          description: Invalid link
+      summary: Get stat link
+      tags:
+      - GetStat
+      x-accepts: application/json
+components:
+  schemas:
+    Line:
+      example:
+        full_url: full_url
+      properties:
+        full_url:
+          type: string
+      type: object
+    inline_response_200:
+      example:
+        link: http://localhost:8006/32ebceda
+      properties:
+        link:
+          example: http://localhost:8006/32ebceda
+          type: string
+      type: object
+

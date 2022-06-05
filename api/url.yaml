@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: UrlAPI
+  description: URL shortener REST API
+  version: 1.0.0
+servers:
+  - url: '{protocol}://{hostname}'
+    variables:
+      hostname:
+        description: Hostname
+        default: localhost:8006
+      protocol:
+        description: Protocol
+        default: http
+components:
+  schemas:
+    Line:
+      type: object
+      properties:
+        full_url:
+          type: string
+tags:
+  - name: Line
+    description: "Operations with lines"
+paths:
+  /linkUrl/:
+    post:
+      tags:
+        - Line
+      summary: "Add a new line into database"
+      operationId: Create
+      requestBody:
+        description: "New url needs to be added into the database"
+        content:
+          'application/json':
+            schema:
+              required:
+                - full_url
+              properties:
+                full_url:
+                  type: "string"
+                  example: "https://www.amazon.com/"
+        required: true
+      responses:
+        "405":
+          description: "Invalid input"
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  link:
+                    type: string
+                    example: "http://localhost:8006/32ebceda"
+    get:
+      tags:
+        - Line
+      summary: Get new short url
+      operationId: Redirect
+      parameters:
+        - name: FullUrl
+          in: path
+          description: Short URL to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+        400:
+          description: Invalid link
+          content:
+            { }
+  /linkUrl/[id]:
+    get:
+      tags:
+        - GetStat
+      summary: Get stat link
+      operationId: GetStat
+      parameters:
+        - name: UrlStat
+          in: path
+          description: stat info
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+        400:
+          description: Invalid link
+          content: { }

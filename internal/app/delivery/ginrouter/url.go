@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"github.com/e4t4g/URLback/cmd/app/config"
 	"net/http"
-	"os"
 	"strconv"
-	"text/template"
 
 	"github.com/e4t4g/URLback/internal/app/usecase"
 
@@ -18,7 +16,6 @@ type Delivery interface {
 	Create() gin.HandlerFunc
 	Redirect() gin.HandlerFunc
 	GetStat() gin.HandlerFunc
-	WebGenerate() gin.HandlerFunc
 }
 
 type delivery struct {
