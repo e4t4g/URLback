@@ -45,8 +45,8 @@ func (d delivery) Create() gin.HandlerFunc {
 		}
 
 		host := cfg.Host
-		//port := cfg.Port
-		port := 8001
+		port := cfg.Port
+
 
 		var newURL *URLData
 		if err = c.ShouldBind(&newURL); err != nil {
