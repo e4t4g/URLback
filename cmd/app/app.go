@@ -17,6 +17,7 @@ import (
 	"github.com/e4t4g/URLback/internal/app/usecase"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mxk/go-sqlite/sqlite3"
 	"go.uber.org/zap"
@@ -47,12 +48,6 @@ func App() {
 
 	flag.Parse()
 
-	//cfg := config.Config{}
-	//err = cfg.ReadFromFile(sugar)
-	//if err != nil {
-	//	sugar.Fatalf("can not read config file %s", err)
-	//}
-
 	cfg := config.Config{}
 	if err = cfg.ReadFromFile(sugar); err != nil {
 		cfg.REadFromEnv(sugar)
@@ -80,6 +75,8 @@ func App() {
 			params.Request.Proto,
 		)
 	}))
+
+	router.Use(cors.Default())
 
 	router.StaticFile("/favicon.ico", "./favicon.ico")
 
