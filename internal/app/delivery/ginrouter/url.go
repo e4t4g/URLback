@@ -45,7 +45,8 @@ func (d delivery) Create() gin.HandlerFunc {
 		}
 
 		host := cfg.Host
-		port := cfg.Port
+		//port := cfg.Port
+		port := 8001
 
 		var newURL *URLData
 		if err = c.ShouldBind(&newURL); err != nil {
@@ -60,7 +61,7 @@ func (d delivery) Create() gin.HandlerFunc {
 		shortURL := fmt.Sprintf("%s:%d/%s", host, port, result.ShortURL)
 		statURL := fmt.Sprintf("%s:%d/stat/%d", host, port, result.ID)
 
-		p := URLData{FullURL: statURL, ShortURL: shortURL}
+		p := URLData{ID: result.ID, FullURL: statURL, ShortURL: shortURL}
 		c.JSON(http.StatusOK, p)
 	}
 }

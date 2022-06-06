@@ -16,8 +16,8 @@ import (
 	"github.com/e4t4g/URLback/internal/app/repository/sqlite"
 	"github.com/e4t4g/URLback/internal/app/usecase"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mxk/go-sqlite/sqlite3"
 	"go.uber.org/zap"
@@ -84,7 +84,7 @@ func App() {
 	router.GET("/stat/:id", deliveryLayer.GetStat())
 	router.GET("/:token", deliveryLayer.Redirect())
 
-	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.Port), Handler: router}
+	srv := &http.Server{Addr:fmt.Sprintf(":%d", cfg.Port), Handler: router}
 
 	sugar.Info("[shutting down gracefully, press Ctrl+C again to force]")
 
@@ -97,7 +97,7 @@ func App() {
 		}
 	}(ctx, srv)
 
-	sugar.Infof("[[Listening and serving HTTP on :%d]]", cfg.Port)
+	sugar.Infof("[[Listening and serving HTTP on :%d, %s]]", cfg.Port, cfg.Host)
 
 	if err = srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		sugar.Fatalf("listen: %s\n", err.Error())

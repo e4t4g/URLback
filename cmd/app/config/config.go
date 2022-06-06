@@ -18,7 +18,7 @@ type DBconfig struct {
 }
 
 func (c *Config) ReadFromFile(logger *zap.SugaredLogger) error {
-	//configPath := "/home/e4t4g/Desktop/URLbackPr/cmd/configs/app.yaml"
+	//configPath := "/home/e4t4g/Desktop/URLback/cmd/configs/app.yaml"
 	configPath := "./configs/app.yaml"
 
 	data, err := os.ReadFile(configPath)
